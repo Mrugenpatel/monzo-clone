@@ -12,6 +12,9 @@ class BankCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: _account.color,
+          image: _account.image != null
+              ? DecorationImage(image: _account.image, fit: BoxFit.cover)
+              : null,
           boxShadow: [
             BoxShadow(color: Colors.grey[300], spreadRadius: 1, blurRadius: 5)
           ],

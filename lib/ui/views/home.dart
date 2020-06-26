@@ -5,30 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 final List<Transaction> txs = [
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
-  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(-8.99, 'Amazon', 'assets/img/amazon.png'),
+  Transaction(500, 'Savings', 'assets/img/savings.png'),
+  Transaction(-25.98, 'Sainsbury\'s', 'assets/img/sainsburys.png'),
+  Transaction(-11.49, 'Deliveroo', 'assets/img/deliveroo.png'),
 ];
 
 class HomePage extends StatefulWidget {
@@ -44,7 +26,8 @@ class _HomePageState extends State<HomePage> {
         logo: 'monzo',
         expiresEnd: [0, 8, 2, 2],
         cardholderName: 'John Appleseed'),
-    Account('Savings', Colors.blue, 85000.00),
+    Account('Savings', Colors.blue, 85000.00,
+        image: AssetImage('assets/img/savings.png')),
   ];
 
   int _cardIndex = 0;
@@ -206,9 +189,57 @@ class _HomePageState extends State<HomePage> {
                         controller: scrollController,
                         itemCount: txs.length,
                         itemBuilder: (context, index) => ListTile(
-                          leading: txs[index].image,
-                          title: Text(txs[index].name),
-                          trailing: Text(txs[index].amount.toStringAsFixed(2)),
+                          leading: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              image: DecorationImage(
+                                image: AssetImage(txs[index].asset),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          title: Text(
+                            txs[index].name,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
+                          trailing: RichText(
+                            text: TextSpan(
+                              style: txs[index].amount > 0
+                                  ? TextStyle(color: Colors.green)
+                                  : TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                txs[index].amount > 0
+                                    ? TextSpan(
+                                        text: '+',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18))
+                                    : TextSpan(),
+                                TextSpan(
+                                  text: txs[index].amount.toStringAsFixed(0),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                TextSpan(
+                                  text: txs[index]
+                                      .amount
+                                      .toStringAsFixed(2)
+                                      .substring(
+                                        txs[index]
+                                            .amount
+                                            .toStringAsFixed(2)
+                                            .indexOf('.'),
+                                      ),
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),

@@ -8,6 +8,7 @@ class Account {
   final List<int> expiresEnd;
   final String logo;
   final String cardholderName;
+  final AssetImage image;
   Account(
     this.name,
     this.color,
@@ -16,5 +17,6 @@ class Account {
     this.expiresEnd,
     this.logo,
     this.cardholderName,
+    this.image,
   });
 }
