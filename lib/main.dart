@@ -1,4 +1,4 @@
-import 'package:bankingapp/ui/views/home.dart';
+import 'package:bankingapp/ui/views/home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
