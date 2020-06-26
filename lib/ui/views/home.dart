@@ -1,10 +1,35 @@
 import 'package:bankingapp/datamodels/account.dart';
+import 'package:bankingapp/datamodels/transaction.dart';
 import 'package:bankingapp/ui/shared_widgets/bank_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+final List<Transaction> txs = [
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+  Transaction(4.99, 'Amazon', Image.asset('assets/img/amazon.png')),
+];
 
 class HomePage extends StatefulWidget {
   @override
@@ -46,105 +71,149 @@ class _HomePageState extends State<HomePage> {
         ],
         centerTitle: true,
       ),
-      body: Column(
+      body: Stack(
         children: <Widget>[
-          SizedBox(height: 12.5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Column(
             children: <Widget>[
-              RichText(
-                text: TextSpan(
-                  text: '£',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: f.format(_cards[_cardIndex].balance.toInt()),
+              SizedBox(height: 12.5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      text: '£',
                       style: TextStyle(
                         color: Colors.black,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 28,
-                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
                       ),
-                    ),
-                    TextSpan(
-                      text: _cards[_cardIndex]
-                          .balance
-                          .toStringAsFixed(2)
-                          .substring(_cards[_cardIndex]
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: f.format(_cards[_cardIndex].balance.toInt()),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 28,
+                            fontFamily: 'Roboto',
+                          ),
+                        ),
+                        TextSpan(
+                          text: _cards[_cardIndex]
                               .balance
                               .toStringAsFixed(2)
-                              .indexOf('.')),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                              .substring(_cards[_cardIndex]
+                                  .balance
+                                  .toStringAsFixed(2)
+                                  .indexOf('.')),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 25),
+              Row(
+                children: <Widget>[
+                  Container(
+                    height: 170,
+                    width: MediaQuery.of(context).size.width,
+                    child: Swiper(
+                      index: _cardIndex,
+                      itemBuilder: (BuildContext context, int index) {
+                        return BankCard(_cards[index]);
+                      },
+                      onIndexChanged: (index) {
+                        setState(() {
+                          _cardIndex = index;
+                        });
+                      },
+                      itemCount: _cards.length,
+                      viewportFraction: 0.70,
+                      scale: 0.9,
+                      loop: false,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AccountAction(
+                      iconData: Icons.credit_card,
+                      onPress: () {},
+                      text: 'Account',
+                    ),
+                    AccountAction(
+                      iconData: Icons.remove_red_eye,
+                      onPress: () {},
+                      text: 'PIN & card\n number',
+                    ),
+                    AccountAction(
+                      iconData: Icons.ac_unit,
+                      onPress: () {},
+                      text: 'Freeze',
+                    ),
+                    AccountAction(
+                      iconData: Icons.add,
+                      onPress: () {
+                        showCupertinoModalBottomSheet(
+                          context: context,
+                          builder: (context, scrollController) => Container(),
+                        );
+                      },
+                      text: 'Add money',
                     ),
                   ],
-                ),
-              )
-            ],
-          ),
-          SizedBox(height: 25),
-          Row(
-            children: <Widget>[
-              Container(
-                height: 170,
-                width: MediaQuery.of(context).size.width,
-                child: Swiper(
-                  index: _cardIndex,
-                  itemBuilder: (BuildContext context, int index) {
-                    return BankCard(_cards[index]);
-                  },
-                  onIndexChanged: (index) {
-                    setState(() {
-                      _cardIndex = index;
-                    });
-                  },
-                  itemCount: _cards.length,
-                  viewportFraction: 0.70,
-                  scale: 0.9,
-                  loop: false,
                 ),
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AccountAction(
-                  iconData: Icons.credit_card,
-                  onPress: () {},
-                  text: 'Account',
+          DraggableScrollableSheet(
+            initialChildSize: 0.425,
+            minChildSize: 0.425,
+            builder: (context, scrollController) {
+              return Card(
+                elevation: 15.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15))),
+                margin: const EdgeInsets.all(0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 12),
+                    Container(
+                      height: 5,
+                      width: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(16)),
+                    ),
+                    SizedBox(height: 16),
+                    Expanded(
+                      child: ListView.builder(
+                        physics: ClampingScrollPhysics(),
+                        controller: scrollController,
+                        itemCount: txs.length,
+                        itemBuilder: (context, index) => ListTile(
+                          leading: txs[index].image,
+                          title: Text(txs[index].name),
+                          trailing: Text(txs[index].amount.toStringAsFixed(2)),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                AccountAction(
-                  iconData: Icons.remove_red_eye,
-                  onPress: () {},
-                  text: 'PIN & card\n number',
-                ),
-                AccountAction(
-                  iconData: Icons.ac_unit,
-                  onPress: () {},
-                  text: 'Freeze',
-                ),
-                AccountAction(
-                  iconData: Icons.add,
-                  onPress: () {
-                    showCupertinoModalBottomSheet(
-                      context: context,
-                      builder: (context, scrollController) => Container(),
-                    );
-                  },
-                  text: 'Add money',
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ],
       ),
