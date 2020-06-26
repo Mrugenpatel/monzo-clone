@@ -49,6 +49,13 @@ class _HomePageState extends State<HomePage> {
 
   int _cardIndex = 0;
 
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +82,7 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              SizedBox(height: 12.5),
+              SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -115,11 +122,11 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               ),
-              SizedBox(height: 25),
+              SizedBox(height: 15),
               Row(
                 children: <Widget>[
                   Container(
-                    height: 170,
+                    height: 165,
                     width: MediaQuery.of(context).size.width,
                     child: Swiper(
                       index: _cardIndex,
@@ -132,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                         });
                       },
                       itemCount: _cards.length,
-                      viewportFraction: 0.70,
+                      viewportFraction: 0.7,
                       scale: 0.9,
                       loop: false,
                     ),
@@ -141,7 +148,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,12 +170,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     AccountAction(
                       iconData: Icons.add,
-                      onPress: () {
-                        showCupertinoModalBottomSheet(
-                          context: context,
-                          builder: (context, scrollController) => Container(),
-                        );
-                      },
+                      onPress: () {},
                       text: 'Add money',
                     ),
                   ],
@@ -216,6 +218,25 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.swap_horiz),
+            title: Text('Payments'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.help_outline),
+            title: Text('Help'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.lightBlue,
+        onTap: _onItemTapped,
       ),
     );
   }
